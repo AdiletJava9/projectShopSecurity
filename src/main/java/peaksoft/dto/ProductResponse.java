@@ -8,7 +8,6 @@ import lombok.Data;
 import peaksoft.enums.Category;
 
 @Data
-@AllArgsConstructor
 @Builder
 public class ProductResponse {
     private Long id;
@@ -19,4 +18,14 @@ public class ProductResponse {
     private String madeIn;
     @Enumerated(EnumType.STRING)
     private Category category;
+
+    public ProductResponse(Long id, String name, Integer price, String images, String characteristic, String madeIn, Category category) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.images = images;
+        this.characteristic = characteristic;
+        this.madeIn = madeIn;
+        this.category = category;
+    }
 }
