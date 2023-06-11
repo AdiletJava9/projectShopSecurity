@@ -1,6 +1,7 @@
 package peaksoft.api;
 import jakarta.annotation.security.PermitAll;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import peaksoft.dto.*;
@@ -14,10 +15,10 @@ import java.util.List;
 public class ProductApi {
     private final ProductService productService;
 
-//    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping
-    public SimpleResponse saveProduct(@RequestBody ProductRequest productRequest , @RequestParam Long brandId) {
-        return productService.saveProduct(productRequest,brandId);
+    public SimpleResponse saveProduct(@RequestBody ProductRequest productRequest) {
+        return productService.saveProduct(productRequest);
     }
 
     @PermitAll
@@ -31,6 +32,7 @@ public class ProductApi {
     public ProductResponse getById(@PathVariable Long id) {
         return productService.getProductById(id);
     }
+
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PutMapping("/{id}")
     public SimpleResponse updateProduct(@PathVariable Long id, @RequestBody ProductRequest productRequest) {
@@ -40,6 +42,18 @@ public class ProductApi {
     @DeleteMapping("/{id}")
     public SimpleResponse deleteProductById(@PathVariable Long id) {
         return productService.deleteProductById(id);
+    }
+    @PostMapping("/{id}/comments")
+    public ResponseEntity<Void> addCommentToProduct(@PathVariable Long id,
+                                                    @RequestParam String commentRequest) {
+        productService.commentToProduct(id, commentRequest);
+        return ResponseEntity.ok().build();
+    }
+    @PostMapping("/{productId}/like")
+    public ResponseEntity<Void> addLikeToProduct(@PathVariable Long productId,
+                                                 @RequestParam Long userId) {
+        productService.likeToProduct(productId, userId);
+        return ResponseEntity.ok().build();
     }
 }
 

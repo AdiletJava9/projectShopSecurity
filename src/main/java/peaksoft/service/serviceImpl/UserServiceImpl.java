@@ -10,7 +10,7 @@ import peaksoft.dto.UserResponse;
 import peaksoft.entity.User;
 import peaksoft.repository.UserRepository;
 import peaksoft.service.UserService;
-
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -27,6 +27,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userRequest.getEmail());
         user.setPassword(userRequest.getPassword());
         user.setRole(userRequest.getRole());
+        user.setCreatedAt(ZonedDateTime.now());
         userRepository.save(user);
         return SimpleResponse.builder()
                 .status(HttpStatus.OK)

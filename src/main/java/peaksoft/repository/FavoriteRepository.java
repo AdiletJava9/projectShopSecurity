@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 import peaksoft.entity.Favorite;
 @Repository
 public interface FavoriteRepository extends JpaRepository<Favorite,Long> {
+    int countByProductId(Long productId);
 }
