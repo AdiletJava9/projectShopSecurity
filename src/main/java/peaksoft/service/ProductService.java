@@ -19,6 +19,6 @@ public interface ProductService {
     SimpleResponse updateProduct(Long id, ProductRequest productRequest);
 
     SimpleResponse deleteProductById(Long id);
-    void commentToProduct(Long productId, String comment);
-    void likeToProduct(Long productId, Long userId);
+    SimpleResponse commentToProduct(Long productId, String comment);
+    SimpleResponse likeToProduct(Long productId, Long userId);
 }

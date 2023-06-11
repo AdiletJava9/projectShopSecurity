@@ -48,7 +48,7 @@ public class ProductResponse {
         this.category = category;
     }
 
-    public ProductResponse(Long id, String name, Integer price, String images, String characteristic, String madeIn, Category category, int likesCount) {
+    public ProductResponse(Long id, String name, Integer price, String images, String characteristic, String madeIn, Category category, List<Comment> comments) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -56,6 +56,6 @@ public class ProductResponse {
         this.characteristic = characteristic;
         this.madeIn = madeIn;
         this.category = category;
-        this.likesCount = likesCount;
+        this.comments = comments;
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import peaksoft.dto.*;
+import peaksoft.entity.Comment;
 import peaksoft.service.ProductService;
 
 import java.util.List;
@@ -45,8 +46,8 @@ public class ProductApi {
     }
     @PostMapping("/{id}/comments")
     public ResponseEntity<Void> addCommentToProduct(@PathVariable Long id,
-                                                    @RequestParam String commentRequest) {
-        productService.commentToProduct(id, commentRequest);
+                                                    @RequestParam String comment) {
+        productService.commentToProduct(id, comment);
         return ResponseEntity.ok().build();
     }
     @PostMapping("/{productId}/like")

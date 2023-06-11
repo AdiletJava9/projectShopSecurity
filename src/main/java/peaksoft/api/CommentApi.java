@@ -12,8 +12,8 @@ import peaksoft.service.CommentService;
 @RequestMapping("/api/comments")
 public class CommentApi {
     private final CommentService commentService;
-    @PostMapping("/{id}/comment")
-    public String addCommentToProduct(@PathVariable Long id, @RequestBody CommentRequest commentRequest) {
-        return commentService.commentToProduct(id, commentRequest);
-    }
+//    @PostMapping("/{id}/comment")
+//    public String addCommentToProduct(@PathVariable Long id, @RequestBody CommentRequest commentRequest) {
+//        return commentService.commentToProduct(id, commentRequest);
+//    }
 }

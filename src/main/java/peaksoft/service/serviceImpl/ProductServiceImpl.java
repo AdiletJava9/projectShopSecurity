@@ -1,5 +1,4 @@
 package peaksoft.service.serviceImpl;
-
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,6 @@ import peaksoft.repository.FavoriteRepository;
 import peaksoft.repository.ProductRepository;
 import peaksoft.repository.UserRepository;
 import peaksoft.service.ProductService;
-
 import java.time.ZonedDateTime;
 import java.util.*;
 
@@ -54,16 +52,16 @@ public class ProductServiceImpl implements ProductService {
             throw new NullPointerException("Product with id: " + id + " not found");
         }
         int countLikes = favoriteRepository.countByProductId(id);
-        ProductResponse response = new ProductResponse();
-        response.setId(product.getId());
-        response.setName(product.getName());
-        response.setCategory(product.getCategory());
-        response.setImages(product.getImages());
-        response.setCharacteristic(product.getCharacteristic());
-        response.setPrice(product.getPrice());
-        response.setMadeIn(product.getMadeIn());
-        response.setLikesCount(countLikes);
-        return response;
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setId(product.getId());
+        productResponse.setName(product.getName());
+        productResponse.setCategory(product.getCategory());
+        productResponse.setImages(product.getImages());
+        productResponse.setCharacteristic(product.getCharacteristic());
+        productResponse.setPrice(product.getPrice());
+        productResponse.setMadeIn(product.getMadeIn());
+        productResponse.setLikesCount(countLikes);
+        return productResponse;
     }
 
     @Override
@@ -94,59 +92,39 @@ public class ProductServiceImpl implements ProductService {
                 .build();
     }
 
-//    @Override
-//    public String commentToProduct(Long productId, CommentRequest commentRequests) {
-//        Product product = productRepository.findById(productId).orElseThrow(() ->
-//                new NullPointerException("Product with id: " + productId + " not found"));
-//        Comment comment = new Comment();
-//        comment.setComment(commentRequests.getComment());
-//        comment.setCreateDate(ZonedDateTime.now());
-//        List<Comment> comments = new ArrayList<>();
-//        comments.add(comment);
-//        product.setComments(comments);
-//        return "comment saved " + productId;
-//    }
-//
-//    @Override
-//    public SimpleResponse basketToProduct(Long productId, Basket basket) {
-//        Product product = productRepository.findById(productId).orElseThrow(() ->
-//                new NullPointerException("Product with id: " + productId + " not found"));
-//        Basket basket1 = new Basket();
-//        basket1.setProducts(basket.getProducts());
-//        basket1.setUser(basket.getUser());
-//        List<Basket> baskets = new ArrayList<>();
-//        baskets.add(basket1);
-//        product.setBaskets(baskets);
-//        return SimpleResponse.builder()
-//                .status(HttpStatus.OK)
-//                .message(String.format("Product with name %s is baskets ", product.getName()))
-//                .build();
-//    }
-
     @Override
-    public void commentToProduct(Long productId, String comment) {
+    public SimpleResponse commentToProduct(Long productId, String comment) {
         Product product = productRepository.findById(productId).orElseThrow(() ->
                 new NullPointerException("Product with id: " + productId + " not found"));
         Comment comment1 = new Comment();
+        comment1.setComment(comment);
+        comment1.setCreateDate(ZonedDateTime.now());
+        comment1.setUser(comment1.getUser());
         comment1.setProduct(product);
         product.getComments().add(comment1);
         commentRepository.save(comment1);
-        System.out.println("Comment added to with product id: " + productId);
+        return SimpleResponse.builder()
+                .status(HttpStatus.OK)
+                .message(String.format("You left a comment with id: %s ", productId))
+                .build();
     }
 
     @Override
-    public void likeToProduct(Long productId, Long userId) {
+    public SimpleResponse likeToProduct(Long productId, Long userId) {
         Product product = productRepository.findById(productId).orElse(null);
         User user = userRepository.findById(userId).orElse(null);
         if (product == null || user == null) {
             System.out.println("not not not not not not");
-            return;
         }
         Favorite favorite = new Favorite();
         favorite.setUser(user);
         favorite.setProduct(product);
+        assert product != null;
         product.getFavorites().add(favorite);
         productRepository.save(product);
-        System.out.println("Like added with product id: " + productId);
+        return SimpleResponse.builder()
+                .status(HttpStatus.OK)
+                .message(String.format("Like added with product id: " + productId))
+                .build();
     }
 }
